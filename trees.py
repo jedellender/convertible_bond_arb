@@ -7,13 +7,12 @@ def crr_params(sigma, r, q, T, N):
     dt = T / N  # defn time step
     u = np.exp(sigma * np.sqrt(dt))
     d = 1 / u
-    p_up = (np.exp((r - q) * dt) - d) / (u - d)
-    p_down = 1 - p_up
+    p = (np.exp((r - q) * dt) - d) / (u - d)
+    disc = np.exp(-r * dt) # discount factor
 
-    if not 0 <= p_up <= 1:
+    if not 0 <= p <= 1:
         raise ValueError("Invalid parameters: p_up must be in [0, 1]")
-
-    return u, d, p_up, p_down
+    return u, d, p, disc
 
 
 def binomial_price(S, K, T, r, sigma, q, N):
