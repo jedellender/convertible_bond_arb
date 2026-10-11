@@ -20,7 +20,7 @@ def call_px(S, K, T, r, sigma, q):
 
 
 def bs_greeks(S, K, T, r, sigma, q):
-    # calculate greeks assuming european call w/ cts. dividend
+    # calculate BS greeks for european call w/ cts. dividend
 
     d1, d2 = bs_d1_d2(S, K, T, r, sigma, q)
 
