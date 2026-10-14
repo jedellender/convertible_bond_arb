@@ -18,7 +18,7 @@ def crr_params(sigma, r, q, T, N):
 def binomial_price(S, K, T, r, sigma, q, N):
     # calculate the price of a European option using CRR binomial model
 
-    u, d, p_up, disc, dt = crr_params(S, sigma, r, q, T, N)
+    u, d, p_up, disc, dt = crr_params(sigma, r, q, T, N)
     p_down = 1-p_up
 
     # init asset prices at t=T.
@@ -31,13 +31,11 @@ def binomial_price(S, K, T, r, sigma, q, N):
 
     return option_values[0]
 
-
 def stock_lattice(S, u, d, n):
     # generate lattice of stock prices 
 
     lattice = [ np.array([S * u**j * d**(i - j)
-                          for j in range(i+1)
-                          ])
+                          for j in range(i+1)])
                           for i in range(n+1)
                           ]
     return lattice
