@@ -45,3 +45,4 @@ def tf_price(
     Price a non-callable, non-puttable convertible using
     the Tsiveriotis-Fernandes lattice.
     """
+    cr = conversion_ratio(face, conversion_price)

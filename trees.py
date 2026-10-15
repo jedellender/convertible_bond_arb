@@ -32,7 +32,7 @@ def binomial_price(S, K, T, r, sigma, q, N):
     return option_values[0]
 
 def stock_lattice(S, u, d, n):
-    # generate lattice of stock prices 
+    # generate lattice (binomial tree) for walks of S 
 
     lattice = [ np.array([S * u**j * d**(i - j)
                           for j in range(i+1)])
