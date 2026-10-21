@@ -40,3 +40,6 @@ def stock_lattice(S, u, d, n):
                           ]
     return lattice
 
+
+    
+
