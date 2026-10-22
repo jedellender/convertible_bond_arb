@@ -17,7 +17,7 @@ def coupon_schedule(face, coupon_rate, T, freq=2):
 
     return schedule
 
-# to add year_fraction function for real bonds with differing conventions
+# to add year_fraction function for real bonds with differing conventions?
 
 
 def discount_factors(T, freq=2 ,discount_rate=0.05):
@@ -30,3 +30,12 @@ def discount_factors(T, freq=2 ,discount_rate=0.05):
     times = np.asarray(times)
     return np.exp(-discount_rate * times)
 
+def bond_price(face, coupon_rate, T, freq=2, discount_rate=0.05):
+    # returns price of bond given face value, coupon rate, time to maturity, frequency, and discount rate
+
+    schedule = coupon_schedule(face, coupon_rate, T, freq)
+    discounts = discount_factors(T, freq, discount_rate)
+
+    price = np.sum(np.array(schedule) * discounts)
+
+    return price
