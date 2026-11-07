@@ -1,3 +1,5 @@
+from datetime import date
+
 import pandas as pd
 
 def get_data(isin):
@@ -6,7 +8,7 @@ def get_data(isin):
 
     Example call:
     df_timeseries, df_metadata, name = get_data("US21873SAL25")
-    
+
     """
     file = pd.read_excel(
         "data/converts_backup_v2.xlsx",
@@ -39,10 +41,42 @@ def clean_data(file):
     df_timeseries = file[col_timeseries].copy()    
     df_timeseries = df_timeseries.iloc[2:].reset_index(drop=True)
     df_timeseries["Date"] = pd.to_datetime(df_timeseries['Date'])
-    df_timeseries = df_timeseries.set_index("Date")    
+    df_timeseries = df_timeseries.set_index("Date")
 
     # Remove timeseries rows and before parsing dates
     df_metadata = file[col_metadata].copy()
     df_metadata = df_metadata.iloc[1:3].reset_index(drop=True) # keep only first two rows of metadata
+
+    # set data to be numeric
+    df_timeseries = df_timeseries.apply(pd.to_numeric, errors='coerce')
+
+    numeric_metadata = [
+        "Parity",
+        "Conversion premium",
+        "Bond floor",
+        "Delta",
+        "Gamma",
+        "Implied volatility",
+        "Face value",
+        "Conversion ratio",
+        "Conversion price",
+        "Effective duration",
+        "Yield to worst",
+        "Outstanding",
+        "Coupon rate",
+        "Coupon frequency",
+        "Dividend yield.1",
+    ]
+    
+    df_metadata[numeric_metadata] = df_metadata[numeric_metadata].apply(
+        pd.to_numeric,
+        errors="coerce",
+    )
+    # fix date datatypes in metadata dataframe
+    date_columns = ["Maturity date", "Settlement date"]
+    df_metadata[date_columns] = df_metadata[date_columns].apply(pd.to_datetime, errors='coerce')
+
+    # delete row 0 of old bbg metadata, which is just the name of the metadata field.
+    df_metadata = df_metadata.drop(df_metadata.index[0], axis=0)
 
     return df_timeseries, df_metadata
